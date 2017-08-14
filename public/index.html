@@ -1,0 +1,73 @@
+<!-- This is a static file -->
+<!-- served from your routes in server.js -->
+
+<!-- You might want to try something fancier: -->
+<!-- html/nunjucks docs: https://mozilla.github.io/nunjucks/ -->
+<!-- pug: https://pugjs.org/ -->
+<!-- haml: http://haml.info/ -->
+<!-- hbs(handlebars): http://handlebarsjs.com/ -->
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Hungry Pandas prototype </title>
+    <meta name="description" content="A cool thing made with Glitch">
+    <link id="favicon" rel="icon" href="https://glitch.com/edit/favicon-app.ico" type="image/x-icon">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="https://aframe.io/releases/0.6.1/aframe.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.4.5/socket.io.min.js"></script>
+    <script src="easyrtc/easyrtc.js"></script>
+    <script src="https://unpkg.com/networked-aframe/dist/networked-aframe.min.js"></script>
+    <script src="/client.js"></script>
+    <script src="https://rawgit.com/feiss/aframe-environment-component/master/dist/aframe-environment-component.min.js"></script> 
+    <script src="https://samsunginter.net/vrtranquilitie/js/aframe-physics-system.min.js"></script>
+    <script src="https://samsunginter.net/vrtranquilitie/js/boundaryChecker.js"></script>
+
+    
+  </head>
+  <body>
+    <a-scene physics="debug:true" boundary-checker networked-scene="app: myApp; room: room1; debug: true;" spawn-balls>
+      <a-assets>
+        <a-asset-item id="hpanda-obj" src="https://cdn.glitch.com/ba9311ca-c1a5-49c1-b7f2-c160ea028db1%2Fpanda.obj?1502370520644"></a-asset-item>
+        <a-asset-item id="hpanda-mtl" src="https://cdn.glitch.com/dbc080b5-33ff-4b51-ac41-00ac3323b0e1%2Fmaterials.mtl?1501765348611"></a-asset-item>
+        <script id="avatar-template" type="text/html">
+          <a-entity class="avatarClass">
+            <a-entity obj-model="obj: #hpanda-obj; mtl: #hpanda-mtl" scale="2 2 2"></a-entity>
+          </a-entity>
+        </script>
+        <script id="ball-template" type="text/html">
+            <a-sphere radius="0.6" rotation="2 2 2" material="color: #CF7FE1; metalness:0.1; roughness: 1;" ></a-sphere>
+        </script>
+      </a-assets>
+      <!-- Camera -->
+      <!--<a-entity camera look-controls wasd-controls position="0 1.7 0" static-body></a-entity>-->
+      <!-- Floor -->
+      <a-plane height="40" width="40" rotation="89 180 180" static-body="sphereRadius:NaN" position="0 0.1 10" material="" geometry="height:20"></a-plane>      <!--a-sphere color="tomato" radius="1" position="0 5 0" dynamic-body> </a-sphere-->
+      <a-plane height="40" width="40" rotation="91 180 180" static-body="sphereRadius:NaN" position="0 0.1 -10" material="" geometry="height:20"></a-plane>
+      
+      <!-- a spinning stick that send the balls in random directions-->
+      <a-entity>
+       <a-cylinder static-body position="0 0.5 0" rotation="45, 0 0" radius="0.2" height="3" color="tomato">      
+         <a-animation attribute="rotation"
+               dur="15000"
+               fill="both"
+               to="45 360 0"
+               repeat="indefinite"
+                easing="linear"
+              ></a-animation>
+      </a-cylinder>
+        </a-entity>
+      
+      
+      <a-box static-body="sphereRadius:NaN" position="-7 0 0" size="2 3 2" color="tomato" rotation="0 0 30" scale="1 4 20">  </a-box>
+      <a-box static-body="sphereRadius:NaN" position="7 0 0" size="2 3 2" color="tomato" rotation="0 0 -30" scale="1 4 20">  </a-box>
+      
+      <a-entity environment="preset:forest"></a-entity>
+      <a-entity id="player" networked="template:#avatar-template;showLocalTemplate:false;" camera position="0 1.8 9" wasd-controls look-controls></a-entity>
+      
+    </a-scene>
+
+  </body>
+</html>
